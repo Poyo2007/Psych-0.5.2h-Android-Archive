@@ -153,6 +153,9 @@ class ChartingState extends MusicBeatState
 
 	var leftIcon:HealthIcon;
 	var rightIcon:HealthIcon;
+	
+	var key_space:FlxButton;
+	var key_shift:FlxButton;
 
 	var value1InputText:FlxUIInputText;
 	var value2InputText:FlxUIInputText;
@@ -393,6 +396,16 @@ class ChartingState extends MusicBeatState
 		add(curRenderedNoteType);
 		add(nextRenderedSustains);
 		add(nextRenderedNotes);
+		
+		key_space = new FlxButton(60, 60, "");
+    key_space.loadGraphic(Paths.image("android/key_space")); //"assets/images/key_space.png"
+    key_space.alpha = 0.75;
+    add(key_space);
+
+    key_shift = new FlxButton(60, 200, "");
+    key_shift.loadGraphic(Paths.image("android/key_shift")); //"assets/images/key_shift.png"
+    key_shift.alpha = 0.75;
+    add(key_shift);
 
 		if(lastSong != currentSongName) {
 			changeSection();
@@ -1580,7 +1593,7 @@ class ChartingState extends MusicBeatState
 			{
 				dummyArrow.visible = true;
 				dummyArrow.x = Math.floor(touch.x / GRID_SIZE) * GRID_SIZE;
-				if (FlxG.keys.pressed.SHIFT #if android || _virtualpad.buttonY.pressed #end)
+				if (FlxG.keys.pressed.SHIFT #if android || key_shift.pressed #end)
 					dummyArrow.y = touch.y;
 				else{
 					var time = getStrumTime(touch.y);
@@ -1604,7 +1617,7 @@ class ChartingState extends MusicBeatState
 				{
 					if (FlxG.mouse.overlaps(note))
 					{
-						if (FlxG.keys.pressed.CONTROL)
+						if (FlxG.keys.pressed.CONTROL #if android || _virtualpad.buttonX.pressed #end)
 						{
 							selectNote(note);
 						}
@@ -1735,13 +1748,13 @@ class ChartingState extends MusicBeatState
 				return;
 			}
 
-			if(FlxG.keys.justPressed.Z && FlxG.keys.pressed.CONTROL) {
+			if(FlxG.keys.justPressed.Z && (FlxG.keys.pressed.CONTROL #if android || _virtualpad.buttonX.pressed #end)) {
 				undo();
 			}
 
 
 
-			if(FlxG.keys.justPressed.Z #if android || _virtualpad.buttonZ.justPressed #end && curZoom > 0 && !FlxG.keys.pressed.CONTROL) {
+			if(FlxG.keys.justPressed.Z #if android || _virtualpad.buttonZ.justPressed #end && curZoom > 0 && (!FlxG.keys.pressed.CONTROL #if android || _virtualpad.buttonX.pressed #end)) {
 				--curZoom;
 				updateZoom();
 			}
@@ -1752,7 +1765,7 @@ class ChartingState extends MusicBeatState
 
 			if (FlxG.keys.justPressed.TAB #if android || _virtualpad.buttonD.justPressed #end)
 			{
-				if (FlxG.keys.pressed.SHIFT #if android || _virtualpad.buttonY.pressed #end)
+				if (FlxG.keys.pressed.SHIFT #if android || key_shift.pressed #end)
 				{
 					UI_box.selected_tab -= 1;
 					if (UI_box.selected_tab < 0)
@@ -1766,7 +1779,7 @@ class ChartingState extends MusicBeatState
 				}
 			}
 
-			if (FlxG.keys.justPressed.SPACE #if android || _virtualpad.buttonX.justPressed #end)
+			if (FlxG.keys.justPressed.SPACE #if android || key_space.justPressed #end)
 			{
 				if (FlxG.sound.music.playing)
 				{
@@ -1787,7 +1800,7 @@ class ChartingState extends MusicBeatState
 
 			if (FlxG.keys.justPressed.R #if android || _virtualpad.buttonV.justPressed #end)
 			{
-				if (FlxG.keys.pressed.SHIFT #if android || _virtualpad.buttonY.pressed #end)
+				if (FlxG.keys.pressed.SHIFT #if android || key_shift.pressed #end)
 					resetSection(true);
 				else
 					resetSection();
@@ -1814,8 +1827,8 @@ class ChartingState extends MusicBeatState
 				FlxG.sound.music.pause();
 
 				var holdingShift:Float = 1;
-				if (FlxG.keys.pressed.CONTROL) holdingShift = 0.25;
-				else if (FlxG.keys.pressed.SHIFT #if android || _virtualpad.buttonY.pressed #end) holdingShift = 4;
+				if (FlxG.keys.pressed.CONTROL #if android || _virtualpad.buttonX.pressed #end) holdingShift = 0.25;
+				else if (FlxG.keys.pressed.SHIFT #if android || key_shift.pressed #end) holdingShift = 4;
 
 				var daTime:Float = 700 * FlxG.elapsed * holdingShift;
 
@@ -1853,7 +1866,7 @@ class ChartingState extends MusicBeatState
 
 			var style = currentType;
 
-			if (FlxG.keys.pressed.SHIFT #if android || _virtualpad.buttonY.pressed #end){
+			if (FlxG.keys.pressed.SHIFT #if android || key_shift.pressed #end){
 				style = 3;
 			}
 
@@ -1949,7 +1962,7 @@ class ChartingState extends MusicBeatState
 				}
 			}
 			var shiftThing:Int = 1;
-			if (FlxG.keys.pressed.SHIFT #if android || _virtualpad.buttonY.pressed #end)
+			if (FlxG.keys.pressed.SHIFT #if android || key_shift.pressed #end)
 				shiftThing = 4;
 
 			if (FlxG.keys.justPressed.D #if android || _virtualpad.buttonRight.justPressed #end)
