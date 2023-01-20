@@ -1979,13 +1979,6 @@ class FunkinLua {
 			Hardware.vibrate(milliseconds);
 			#end
 		});
-		Lua_helper.add_callback(lua, "getControlType", function() {
-			#if android
-			var mobileControl:Int = AndroidControls.getcontrolmode();
-
-			return mobileControl;
-			#end
-		});
 
 		// LUA TEXTS
 		Lua_helper.add_callback(lua, "makeLuaText", function(tag:String, text:String, width:Int, x:Float, y:Float) {
