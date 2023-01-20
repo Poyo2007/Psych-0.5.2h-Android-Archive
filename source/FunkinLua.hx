@@ -1983,21 +1983,7 @@ class FunkinLua {
 			#if android
 			var mobileControl:Int = AndroidControls.getcontrolmode();
 
-			switch (mobileControl)
-			{
-				case 0:
-					return 'Pad-Right';
-				case 1:
-					return 'Pad-Left';
-				case 2:
-					return 'Pad-Custom';
-				case 3:
-					return 'Duo';
-				case 4:
-					return 'Hitbox';
-				case 5:
-					return 'Keyboard';
-			}
+			return mobileControl;
 			#end
 		});
 
