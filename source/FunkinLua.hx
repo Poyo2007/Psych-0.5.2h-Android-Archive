@@ -1975,6 +1975,27 @@ class FunkinLua {
 			Hardware.vibrate(milliseconds);
 			#end
 		});
+		Lua_helper.add_callback(lua, "getControlType", function() {
+			#if android
+			var mobileControl:Int = AndroidControls.getcontrolmode();
+
+			switch (mobileControl)
+			{
+				case 0:
+					return 'Pad-Right';
+				case 1:
+					return 'Pad-Left';
+				case 2:
+					return 'Pad-Custom';
+				case 3:
+					return 'Duo';
+				case 4:
+					return 'Hitbox';
+				case 5:
+					return 'Keyboard';
+			}
+			#end
+		});
 
 		// LUA TEXTS
 		Lua_helper.add_callback(lua, "makeLuaText", function(tag:String, text:String, width:Int, x:Float, y:Float) {
